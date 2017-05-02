@@ -3,6 +3,8 @@ GEM
   specs:
     concurrent-ruby (1.0.4)
     daemons (1.2.4)
+    database_cleaner (1.5.3)
+    diff-lcs (1.2.5)
     dry-auto_inject (0.4.1)
       dry-container (>= 0.3.4)
     dry-configurable (0.1.7)
@@ -14,7 +16,22 @@ GEM
     rack (1.6.5)
     rack-protection (1.5.3)
       rack
+    rack-test (0.6.3)
+      rack (>= 1.0)
     redis (3.3.1)
+    rspec (3.5.0)
+      rspec-core (~> 3.5.0)
+      rspec-expectations (~> 3.5.0)
+      rspec-mocks (~> 3.5.0)
+    rspec-core (3.5.4)
+      rspec-support (~> 3.5.0)
+    rspec-expectations (3.5.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.5.0)
+    rspec-mocks (3.5.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.5.0)
+    rspec-support (3.5.0)
     sinatra (1.4.8)
       rack (~> 1.5)
       rack-protection (~> 1.4)
@@ -29,11 +46,15 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  database_cleaner
   dry-auto_inject
   dry-container
+  rack
+  rack-test
   redis
+  rspec
   sinatra
   thin
 
 BUNDLED WITH
-   1.13.6
+   1.14.6
