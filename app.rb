@@ -1,11 +1,12 @@
 require 'sinatra'
 require 'dry-auto_inject'
 
-require './container'
+require './containers/in_memory'
+require './containers/redis'
 require './serializers/users_watches'
 require './serializers/videos_watches'
 
-Import = Dry::AutoInject(Container)
+Import = Dry::AutoInject(ENV['USE_REDIS'] == 'true' ? Containers::Redis : Containers::InMemory)
 
 class App < Sinatra::Base
   include Import[:store]
@@ -18,8 +19,8 @@ class App < Sinatra::Base
     user_id  = params[:user_id]
     t = Time.now
 
-    store.upsert(:users_watches, user_id, video_id => t)
-    store.upsert(:videos_watches, video_id, user_id => t)
+    store.upsert(:users_watches, user_id, key: video_id, value: t)
+    store.upsert(:videos_watches, video_id, key: user_id, value: t)
 
     status STATUS_CREATED
     body nil
@@ -30,7 +31,7 @@ class App < Sinatra::Base
     user_id  = params[:id]
 
     result = store.fetch(:users_watches, user_id, Time.now - TIMEOUT)
-    Serializers::UsersWatches.new(result).serialize
+    Serializers::VideosWatches.new(result).serialize
   end
 
   get '/videos/:id/watches' do
@@ -38,6 +39,6 @@ class App < Sinatra::Base
     video_id = params[:id]
 
     result = store.fetch(:videos_watches, video_id, Time.now - TIMEOUT)
-    Serializers::VideosWatches.new(result).serialize
+    Serializers::UsersWatches.new(result).serialize
   end
 end
