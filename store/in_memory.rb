@@ -5,20 +5,20 @@ class Store::InMemory < Store::Base
     @state = {}
   end
 
-  def upsert(store, bucket, value)
+  def upsert(store, bucket, key:, value:)
     init_bucket(store, bucket)
-    raise ArgumentError if value.keys.count > Store::MAX_KEYS_COUNT_ALLOWED
 
-    @state["#{store}_#{bucket}"][value.keys.first] = value.values.first
+    @state[store][bucket][key] = value
   end
 
   def fetch(store, bucket, d)
-    @state["#{store}_#{bucket}"].select { |_, v| v > d }
+    @state[store][bucket].select { |_, v| v > d }
   end
 
   private
 
   def init_bucket(store, bucket)
-    @state["#{store}_#{bucket}"] = {} if @state["#{store}_#{bucket}"].nil?
+    @state[store] = {} if @state[store].nil?
+    @state[store][bucket] = {} if @state[store][bucket].nil?
   end
 end

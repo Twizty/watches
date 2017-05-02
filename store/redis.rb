@@ -3,10 +3,10 @@ require 'redis'
 require_relative './base'
 
 class Store::Redis < Store::Base
-  def upsert(store, bucket, value)
-    raise ArgumentError if value.keys.count > Store::MAX_KEYS_COUNT_ALLOWED
+  DB_NAME = 'videos_watches_app'
 
-    redis.hset("#{store}_#{bucket}", value.keys.first, value.values.first.to_i.to_s)
+  def upsert(store, bucket, key:, value:)
+    redis.hset("#{store}_#{bucket}", key, value.to_i.to_s)
   end
 
   def fetch(store, bucket, d)
@@ -16,6 +16,6 @@ class Store::Redis < Store::Base
   private
 
   def redis
-    @_redis ||= Redis.new
+    @_redis ||= Redis.new(db: DB_NAME)
   end
 end
