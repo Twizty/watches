@@ -21,7 +21,7 @@ class App < Sinatra::Base
   post '/videos/:id/watch' do
     user_id  = params[:user_id]
 
-    if user_id.nil?
+    if user_id.nil? || user_id.empty?
       status STATUS_BAD_REQUEST
       body EMPTY_USER_ERROR
       return
