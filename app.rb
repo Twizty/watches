@@ -16,12 +16,14 @@ class App < Sinatra::Base
 
   TIMEOUT = 5
 
+  EMPTY_USER_ERROR = 'user_id may not be nil'
+
   post '/videos/:id/watch' do
     user_id  = params[:user_id]
 
     if user_id.nil?
       status STATUS_BAD_REQUEST
-      body nil
+      body EMPTY_USER_ERROR
       return
     end
 
