@@ -12,6 +12,14 @@ RSpec.describe App do
       expect(last_response.status).to eq(201)
     end
 
+    it 'returns empty response if bucket is empty' do
+      get '/videos/foo_bar/watches'
+      expect(last_response.body).to eq '[]'
+
+      get '/users/foo_bar/watches'
+      expect(last_response.body).to eq '[]'
+    end
+
     it 'response contains watched video' do
       post '/videos/1/watch', user_id: "1"
 
