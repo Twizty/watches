@@ -7,11 +7,11 @@ class Store::InMemory < Store::Base
 
   def upsert(store, bucket, key:, value:)
     init_bucket(store, bucket)
-
     @state[store][bucket][key] = value
   end
 
   def fetch(store, bucket, d)
+    init_bucket(store, bucket)
     @state[store][bucket].select { |_, v| v > d }
   end
 
