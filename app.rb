@@ -16,7 +16,7 @@ class App < Sinatra::Base
 
   TIMEOUT = 5
 
-  EMPTY_USER_ERROR = 'user_id may not be nil'
+  EMPTY_USER_ERROR = 'user_id may not be empty'
 
   post '/videos/:id/watch' do
     user_id  = params[:user_id]

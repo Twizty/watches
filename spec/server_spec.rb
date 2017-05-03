@@ -23,13 +23,13 @@ RSpec.describe App do
     it 'returns 400 if user_id nil' do
       post '/videos/1/watch'
       expect(last_response.status).to eq(400)
-      expect(last_response.body).to eq('user_id may not be nil')
+      expect(last_response.body).to eq('user_id may not be empty')
     end
 
     it 'returns 400 if user_id is empty string' do
       post '/videos/1/watch', user_id: ''
       expect(last_response.status).to eq(400)
-      expect(last_response.body).to eq('user_id may not be nil')
+      expect(last_response.body).to eq('user_id may not be empty')
     end
 
     it 'response contains watched video' do
