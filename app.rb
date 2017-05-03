@@ -12,11 +12,20 @@ class App < Sinatra::Base
   include Import[:store]
 
   STATUS_CREATED = 201
+  STATUS_BAD_REQUEST = 400
+
   TIMEOUT = 5
 
   post '/videos/:id/watch' do
-    video_id = params[:id]
     user_id  = params[:user_id]
+
+    if user_id.nil?
+      status STATUS_BAD_REQUEST
+      body nil
+      return
+    end
+
+    video_id = params[:id]
     t = Time.now
 
     store.upsert(:users_watches, user_id, key: video_id, value: t)

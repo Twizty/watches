@@ -20,6 +20,11 @@ RSpec.describe App do
       expect(last_response.body).to eq '[]'
     end
 
+    it 'returns 400 if user_id nil' do
+      post '/videos/1/watch'
+      expect(last_response.status).to eq(400)
+    end
+
     it 'response contains watched video' do
       post '/videos/1/watch', user_id: "1"
 
